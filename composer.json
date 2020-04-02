@@ -1,0 +1,23 @@
+{
+    "name": "goranbosic/performance",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Goran Bosic",
+            "email": "boske87@yahoo.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.5",
+        "illuminate/support": "^7.3",
+        "ext-json": "*",
+        "bramus/router": "~1.4",
+        "ext-PDO": "^7.4"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+
+        ]
+    }
+}
