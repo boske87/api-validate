@@ -18,6 +18,7 @@ $router->get('/', function() {
 
 
 $router->post('/address', function() {
+    print_r(getenv('DATABASE_URL'));
     try {
         $db = new Database(getenv('DATABASE_URL'),  getenv('DB_NAME'), getenv('USER'), getenv('PASS'));
     } catch (Exception $e) {
