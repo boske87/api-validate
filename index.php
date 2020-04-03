@@ -12,7 +12,7 @@ use Src\PDO\Database;
 $router = new Router();
 $jsonHandler = new JsonHandler();
 try {
-    $db = new Database('eu-cdbr-west-02.cleardb.net',  'heroku_9b46c2768f3e5c3', 'b748e98c5422ac', 'b120993e');
+    $db = new Database(getenv('DATABASE_URL'),  getenv('DB_NAME'), getenv('USER'), getenv('PASS'));
 } catch (\Exception $e) {
     throw new Exception("Database error".$e->getMessage());
 }
