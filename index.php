@@ -3,7 +3,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Bramus\Router\Router;
 use Performance\Validate\PerformanceValidate;
-
+use Src\Json\JsonHandler;
 use Src\Address\Repository\AddressRepository;
 use Src\PDO\Database;
 // Create Router instance
@@ -19,11 +19,11 @@ $router->get('/', function() {
 
 $router->post('/address', function() {
     try {
-        $db = new Database('127.0.0.1', 'test', 'root', '');
+        $db = new Database(getenv('DATABASE_URL'),  getenv('DB_NAME'), getenv('USER'), getenv('PASS'));
     } catch (Exception $e) {
         throw new Exception("Database error".$e->getMessage());
     }
-
+    $jsonHandler = new JsonHandler();
     //filter input
     $city = filter_input(INPUT_POST, "city");
     $street = filter_input(INPUT_POST, "street");
@@ -33,15 +33,23 @@ $router->post('/address', function() {
         $params = [
             "city" => $city,
             "street" => $street,
-            "postal" => $postal
+            "postal" => $postal,
+            "country" => "Germany"
         ];
+        //call api
+        $validateRequest =  $validate->verify('address', $params);
         //validate input external api
-        if($validate->verify('address', $params)) {
+        if($validateRequest->isValid()) {
             $addressRepo = new AddressRepository($db);
-            $addressRepo->create(array($city,$street,$postal));
+            $addressRepo->create(array($city,$street,$postal, 1));
+            $data = $jsonHandler->encode(array("Peter"=>35, "Ben"=>37, "Joe"=>43), true);
+            echo $data;
+        } else {
+            echo $jsonHandler->encode($validateRequest->getError(), true);
         }
+
     } else {
-        echo 'input error';
+        echo $jsonHandler->encode(array('input error'), true);
     }
 
 });
@@ -49,18 +57,5 @@ $router->post('/address', function() {
 $router->set404(function() use ($router){
     var_dump($router);
 });
-//
 //// Run it!
 $router->run();
-////
-//$tt = new PerformanceValidate();
-//
-//$params = [
-//    "city" => "Trier",
-//    "street" => "Universitätsring 19",
-//    "postal" => "54296"
-//
-//];
-////
-//$ttt = $tt->verify('address', $params);
-//var_dump($ttt);

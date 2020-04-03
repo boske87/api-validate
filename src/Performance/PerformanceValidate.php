@@ -2,7 +2,9 @@
 namespace Performance\Validate;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Performance\Validate\Exceptions\ServiceException;
+
 
 class PerformanceValidate
 {
@@ -64,7 +66,7 @@ class PerformanceValidate
     /**
      * Verify only name of all Performance services
      *
-     * @param $firstname
+     * @param $address
      * @return PerformanceValidateResponse
      */
     public function address(array $address)
@@ -112,6 +114,7 @@ class PerformanceValidate
             // Make url from params and service
             $url = $this->makeUrl($service, $params);
             $responseRaw = $this->client->get($url);
+
             $response = new PerformanceValidateResponse($service, $responseRaw->getBody());
         }
             // Catch ServiceException from make url (in case service is wrong for eg.)
@@ -120,7 +123,7 @@ class PerformanceValidate
             $response = (new PerformanceValidateResponse($service))->handleException($e);
         }
             // Catch all system exceptions to make sure validation never tragically fails
-        catch (\Exception $e)
+        catch (RequestException $e)
         {
             $response = (new PerformanceValidateResponse($service))->handleException($e);
         }

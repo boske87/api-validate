@@ -38,6 +38,11 @@ class PerformanceValidateResponse
     public $message;
 
     /**
+     * @var string $message
+     */
+    public $errorMessage;
+
+    /**
      * If field validation should pass or fail
      *
      * @var boolean Is valid
@@ -75,7 +80,6 @@ class PerformanceValidateResponse
 
 
         $this->rawResponse = $rawResponse;
-
         $this->resolveResponse(json_decode($rawResponse, true));
     }
 
@@ -119,6 +123,15 @@ class PerformanceValidateResponse
     }
 
     /**
+     * Returns if error
+     *
+     */
+    public function getError()
+    {
+        return $this->errorMessage;
+    }
+
+    /**
      * Returns if values entered are valid
      * @return bool
      */
@@ -135,12 +148,17 @@ class PerformanceValidateResponse
      */
     public function handleException(\Exception $e)
     {
-
         $this->isValid = false;
         $this->message = $e->getMessage();
+        $this->errorMessage = $this->parseError($e);
         $this->error = -2;
 
         return $this;
-
     }
+
+    private function parseError($response) {
+        $exception = json_decode((string) $response->getResponse()->getBody());
+        return $exception->error ? $exception->error : false;
+    }
+
 }

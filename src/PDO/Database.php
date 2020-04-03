@@ -59,10 +59,6 @@ class Database extends PDO
      */
     public function executeQuery($query, $data = [])
     {
-        print_r($query);
-        echo '<br>';
-        print_r($data);
-        echo '<br>';
         $stmt = parent::prepare($query);
         try {
             $stmt->execute($data);

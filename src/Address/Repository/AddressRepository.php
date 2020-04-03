@@ -30,7 +30,7 @@ class AddressRepository implements AddressInterface
     public function create($address)
     {
         $this->database->insert(
-            "INSERT INTO address (city, street, postal) VALUES (?, ?, ?)",$address
+            "INSERT INTO address (city, street, postal, country_id) VALUES (?, ?, ?, ?)",$address
         );
     }
 
