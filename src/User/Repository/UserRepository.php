@@ -4,7 +4,7 @@ namespace Src\Address\Repository;
 use Src\PDO\Database;
 
 
-class AddressRepository implements AddressInterface
+class UserRepository implements UserInterface
 {
     /**
      * @var Database
@@ -27,20 +27,23 @@ class AddressRepository implements AddressInterface
      * @param  $address
      * @return mixed|void
      */
-    public function create($address)
+    public function create($data)
     {
         return $this->database->insert(
-            "INSERT INTO address (city, street, postal, country_id) VALUES (?, ?, ?, ?)",$address
+            "INSERT INTO users (first_name, last_name, address_id) VALUES (?, ?, ?)",$data
         );
     }
 
 
 
     /**
-     * @return array
+     *
      */
-    public function getAll(): array
+    public function getAll()
     {
-        $this->database->get();
+        return $this->database->get("select u.first_name, u.last_name, a.city, a.street, a.postal, c.name
+                            from users as u
+                            left join address as a on u.address_id = a.id
+                            left join countries as c on a.country_id = c.id");
     }
 }

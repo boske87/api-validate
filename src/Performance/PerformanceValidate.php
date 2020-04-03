@@ -71,6 +71,7 @@ class PerformanceValidate
      */
     public function address(array $address)
     {
+
         return $this->request(PerformanceValidateService::ADDRESS, $address);
     }
 
@@ -93,7 +94,6 @@ class PerformanceValidate
         foreach ($params as $key => $one) {
             $url .= '&' . $key . '=' . $one;
         }
-        echo $url;
         return $url;
     }
     /**
@@ -113,6 +113,7 @@ class PerformanceValidate
         {
             // Make url from params and service
             $url = $this->makeUrl($service, $params);
+
             $responseRaw = $this->client->get($url);
 
             $response = new PerformanceValidateResponse($service, $responseRaw->getBody());

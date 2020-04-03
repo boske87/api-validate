@@ -1,20 +1,21 @@
 <?php
 namespace Src\Address\Repository;
 
+
 /**
  * all address classes must implement.
  */
 
-interface AddressInterface
+interface UserInterface
 {
     /**
      * @return mixed
      */
-    public function create($address);
+    public function create($user);
 
     /**
      * @return mixed
      */
-    public function getAll() : array;
+    public function getAll();
 
 }

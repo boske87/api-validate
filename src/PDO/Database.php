@@ -62,6 +62,7 @@ class Database extends PDO
         $stmt = parent::prepare($query);
         try {
             $stmt->execute($data);
+
             return $stmt;
         }
         catch (PDOException $e) {
@@ -77,7 +78,7 @@ class Database extends PDO
      */
     public function insert($query, $data = [])
     {
-        return $this->executeQuery($query, $data) ? ( parent::lastInsertId() ? parent::lastInsertId() : true ) : false;
+        return $this->executeQuery($query, $data) ? ( parent::lastInsertId() ? parent::lastInsertId() : 'asdasdasdaa' ) : false;
     }
 
     /**
