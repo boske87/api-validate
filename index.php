@@ -11,7 +11,9 @@ use Src\PDO\Database;
 
 $router = new Router();
 $jsonHandler = new JsonHandler();
+echo getenv('DATABASE_URL').'-------'.getenv('DB_NAME').'-------'.getenv('USER').'-------'.getenv('PASS');
 try {
+
     $db = new Database(getenv('DATABASE_URL'),  getenv('DB_NAME'), getenv('USER'), getenv('PASS'));
 } catch (\Exception $e) {
     throw new Exception("Database error".$e->getMessage());
